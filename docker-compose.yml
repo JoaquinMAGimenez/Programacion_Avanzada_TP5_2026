@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Base de Datos
+  db:
+    image: postgres:15-alpine
+    container_name: tp5-postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: joaquin_user
+      POSTGRES_PASSWORD: mi_password_secreto
+      POSTGRES_DB: tp5_tasks
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Servidor Backend
+  backend:
+    build: ./server
+    container_name: tp5-backend-api
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
